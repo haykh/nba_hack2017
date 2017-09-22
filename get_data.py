@@ -68,6 +68,24 @@ def getStatisticsPlayer(season, game_id, person_id, fname, parameters):
                 if row[person_ind] == person_id and row[game_ind] == game_id:
                     return [row[ind] for ind in param_ind]
 
+def getStatisticsPlayerAllGames(season, person_id, fname, parameters):
+    rootdir = '/Users/hayk/Desktop/NBA_hack2017/Basketball Data-selected/NBAPlayerTrackingData_2014-17/'
+    fname = "{}{}_{}.txt".format(rootdir, season, fname)
+    data = []
+
+    with open(fname, 'rb') as csvfile:
+        csvfile = csv.reader(csvfile, delimiter='\t')
+        first = True
+        for row in csvfile:
+            if first:
+                person_ind = row.index('PERSON_ID')
+                param_ind = [row.index(param) for param in parameters]
+                first = False
+            else:
+                if row[person_ind] == person_id:
+                    data.append([row[ind] for ind in param_ind])
+    return data
+
 def getStatisticsTeam(season, game_id, team_id, fname, parameters):
     rootdir = '/Users/hayk/Desktop/NBA_hack2017/Basketball Data-selected/NBAPlayerTrackingData_2014-17/'
     fname = "{}{}_{}.txt".format(rootdir, season, fname)

@@ -80,3 +80,26 @@ def teamsPlayed(player_id):
                     if not row[team_ind] in teams_played:
                         teams_played.append(row[team_ind])
     return teams_played
+
+def findAllPlayerID(season):
+    root = '/Users/hayk/Desktop/NBA_hack2017/Basketball Data-selected/'
+    pbox = 'Player_Boxscores.csv'
+
+    fname = root + pbox
+    players = []
+    with open(fname, 'rb') as csvfile:
+        csvfile = csv.reader(csvfile, delimiter=',')
+        first = True
+        for row in csvfile:
+            if first:
+                person_ind = row.index('Person_id')
+                season_ind = row.index('Season')
+                season_type_ind = row.index('Season_Type')
+                first = False
+                continue
+            else:
+                if row[season_ind] == season:
+                    if row[season_type_ind] == 'Regular':
+                        if not row[person_ind] in players:
+                            players.append(row[person_ind])
+    return players

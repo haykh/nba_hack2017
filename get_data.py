@@ -90,11 +90,11 @@ def getStatisticsTeam(season, game_id, team_id, fname, parameters):
     rootdir = '/Users/hayk/Desktop/NBA_hack2017/Basketball Data-selected/NBAPlayerTrackingData_2014-17/'
     fname = "{}{}_{}.txt".format(rootdir, season, fname)
 
+    team_data = np.zeros(len(parameters))
     with open(fname, 'rb') as csvfile:
         csvfile = csv.reader(csvfile, delimiter='\t')
         first = True
         found = False
-        team_data = np.zeros(len(parameters))
         for row in csvfile:
             if first:
                 team_ind = row.index('TEAM_ID')
@@ -107,4 +107,20 @@ def getStatisticsTeam(season, game_id, team_id, fname, parameters):
                     found = True
                 if found and row[game_ind] != game_id:
                     return team_data
-        return team_data
+    return team_data
+
+def getGeneralStatistics(season, fname, parameters):
+    rootdir = '/Users/hayk/Desktop/NBA_hack2017/Basketball Data-selected/NBAPlayerTrackingData_2014-17/'
+    fname = "{}{}_{}.txt".format(rootdir, season, fname)
+
+    data = []
+    with open(fname, 'rb') as csvfile:
+        csvfile = csv.reader(csvfile, delimiter='\t')
+        first = True
+        for row in csvfile:
+            if first:
+                param_ind = [row.index(param) for param in parameters]
+                first = False
+            else:
+                data.append(np.array([float(row[ind]) for ind in param_ind]))
+    return data
